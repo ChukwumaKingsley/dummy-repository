@@ -1,10 +1,12 @@
- src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
 
   document.getElementById("search-form").addEventListener("submit", async function (e) {
     e.preventDefault();
     const query = document.getElementById("input-show").value;
     const container = document.querySelector(".show-container");
-    container.innerHTML = ""; // Clear previous results
+    container.innerHTML = "";
 
     try {
       const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
@@ -17,6 +19,7 @@
 
         const img = document.createElement("img");
         img.src = show.image?.medium || "https://via.placeholder.com/210x295?text=No+Image";
+        img.alt = show.name;
 
         const infoDiv = document.createElement("div");
         infoDiv.classList.add("show-info");
@@ -31,9 +34,11 @@
         infoDiv.appendChild(summary);
         showDiv.appendChild(img);
         showDiv.appendChild(infoDiv);
+
         container.appendChild(showDiv);
       });
-    } catch (error) {
-      console.error("Error fetching show data:", error);
+    } catch (err) {
+      container.innerHTML = "<p>Error fetching shows. Please try again.</p>";
     }
   });
+
