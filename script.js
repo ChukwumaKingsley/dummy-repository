@@ -1,44 +1,47 @@
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("search-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const query = document.getElementById("input-show").value.trim();
+        const container = document.querySelector(".show-container");
+        
+        // Input validation
+        if (!query) {
+            container.innerHTML = "<p class='text-danger'>Please enter a search term.</p>";
+            return;
+        }
 
+        // Loading state
+        container.innerHTML = "<p>Loading...</p>";
 
+        try {
+            const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
+            if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+            const data = await res.json();
 
-  document.getElementById("search-form").addEventListener("submit", async function (e) {
-    e.preventDefault();
-    const query = document.getElementById("input-show").value;
-    const container = document.querySelector(".show-container");
-    container.innerHTML = "";
+            // Clear container and check for results
+            container.innerHTML = "";
+            if (data.length === 0) {
+                container.innerHTML = "<p>No shows found.</p>";
+                return;
+            }
 
-    try {
-      const res = await fetch(`https://api.tvmaze.com/search/shows?q=${encodeURIComponent(query)}`);
-      const data = await res.json();
-
-      data.forEach(item => {
-        const show = item.show;
-        const showDiv = document.createElement("div");
-        showDiv.classList.add("show-data");
-
-        const img = document.createElement("img");
-        img.src = show.image?.medium || "https://via.placeholder.com/210x295?text=No+Image";
-        img.alt = show.name;
-
-        const infoDiv = document.createElement("div");
-        infoDiv.classList.add("show-info");
-
-        const title = document.createElement("h1");
-        title.textContent = show.name;
-
-        const summary = document.createElement("div");
-        summary.innerHTML = show.summary || "<p>No summary available</p>";
-
-        infoDiv.appendChild(title);
-        infoDiv.appendChild(summary);
-        showDiv.appendChild(img);
-        showDiv.appendChild(infoDiv);
-
-        container.appendChild(showDiv);
-      });
-    } catch (err) {
-      container.innerHTML = "<p>Error fetching shows. Please try again.</p>";
-    }
-  });
-
+            // Dynamically generate show-data elements
+            data.forEach(item => {
+                const show = item.show;
+                const showDiv = document.createElement("div");
+                showDiv.classList.add("show-data");
+                showDiv.innerHTML = `
+                    <img src="${show.image?.medium || 'path/to/local/placeholder.jpg'}" alt="${show.name}">
+                    <div class="show-info">
+                        <h1>${show.name}</h1>
+                        <div>${show.summary || '<p>No summary available.</p>'}</div>
+                    </div>
+                `;
+                container.appendChild(showDiv);
+            });
+        } catch (err) {
+            container.innerHTML = `<p class="text-danger">Error: ${err.message}. Try again later.</p>`;
+            console.error(err);
+        }
+    });
+});
