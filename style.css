@@ -1,74 +1,63 @@
 body {
     font-family: 'Roboto', sans-serif;
-}
-
-.main-menu {
-    font-size: 2em;
-    padding: 0;
-    background-color: #e0e0e0;
-}
-
-.main-menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: block;
-}
-
-.menu-item {
-    margin: 5px;
-    background-color: #c0c0c0;
-}
-
-.menu-item a {
-    text-decoration: none;
-    color: #000099;
-    display: block;
+    background-color: #eceff1; /* Per image 1 */
+    margin: 10px auto;
     padding: 10px;
 }
 
-.menu-item a:hover {
-    color: #666699;
+.show-container {
+    padding-left: 10px;
+    padding-right: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
-/* Wide screens (desktop) */
-@media (min-width: 1100px) {
-    body {
-        max-width: 1050px;
-        background-color: #99cc99;
+.show-data {
+    width: 100%;
+    background-color: #cfd8dc;
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Floating effect */
+}
+
+.show-info {
+    width: 100%;
+}
+
+.show-data img {
+    width: 210px;
+    height: 295px;
+    object-fit: cover;
+}
+
+.show-info h1 {
+    text-align: center;
+}
+
+/* Desktop (min-width: 800px) */
+@media (min-width: 800px) {
+    .show-data {
+        display: flex;
+    }
+    .show-info {
+        padding: 10px;
+    }
+}
+
+/* Mobile (max-width: 800px) */
+@media (max-width: 800px) {
+    .show-data {
+        flex-direction: column;
+    }
+    .show-data img {
         margin: auto;
+        display: block;
     }
-
-    .main-menu ul {
-        display: flex;
-        justify-content: space-around;
-    }
-
-    main {
-        display: flex;
-        gap: 20px;
-        padding: 20px;
-    }
-
-    main section {
-        flex: 3;
-        max-width: 700px;
-    }
-
-    main aside {
-        flex: 1;
-        max-width: 300px;
-    }
-}
-
-/* Padding for all users */
-.main-menu ul li {
-    padding: 20px;
-}
-
-/* Reduce padding for fine pointer devices like mouse */
-@media (pointer: fine) {
-    .main-menu ul li {
-        padding: 5px;
+    .show-info p {
+        text-align: center;
+        padding: 10px;
     }
 }
